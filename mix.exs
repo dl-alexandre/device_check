@@ -31,6 +31,7 @@ defmodule DeviceCheck.MixProject do
 
   defp deps do
     [
+      {:apple, "~> 0.5"},
       {:req, "~> 0.5"},
       {:jose, "~> 1.11"},
       {:bypass, "~> 2.1", only: :test},

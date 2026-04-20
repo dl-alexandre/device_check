@@ -6,6 +6,7 @@ defmodule DeviceCheck.Token do
   The JWT is used directly as the Bearer token in API requests.
   """
 
+  alias Apple.DeviceCheckAPI
   alias DeviceCheck.Config
 
   @type jwt :: String.t()
@@ -30,8 +31,13 @@ defmodule DeviceCheck.Token do
       }
 
       try do
-        jwk = Config.private_key_pem!(config) |> JOSE.JWK.from_pem()
-        {_, compact} = JOSE.JWT.sign(jwk, header, claims) |> JOSE.JWS.compact()
+        compact =
+          if config.token_ttl_seconds == 3600 do
+            DeviceCheckAPI.build_auth_token!(team_id, key_id, Config.private_key_pem!(config))
+          else
+            sign_locally(config, header, claims)
+          end
+
         {:ok, compact}
       rescue
         e -> {:error, {:token_generation_failed, Exception.message(e)}}
@@ -57,4 +63,10 @@ defmodule DeviceCheck.Token do
   defp require_field(nil, name), do: {:error, {:missing_config, name}}
   defp require_field("", name), do: {:error, {:missing_config, name}}
   defp require_field(value, _), do: {:ok, value}
+
+  defp sign_locally(config, header, claims) do
+    jwk = Config.private_key_pem!(config) |> JOSE.JWK.from_pem()
+    {_, compact} = JOSE.JWT.sign(jwk, header, claims) |> JOSE.JWS.compact()
+    compact
+  end
 end
