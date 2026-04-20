@@ -27,6 +27,7 @@ defmodule DeviceCheck.Config do
           req_options: keyword()
         }
 
+  @doc "Load configuration from Application env merged with runtime opts."
   @spec load(keyword()) :: t()
   def load(opts \\ []) do
     env = Application.get_all_env(:device_check)
@@ -50,6 +51,7 @@ defmodule DeviceCheck.Config do
     }
   end
 
+  @doc "Extract the private key PEM from config (either from string or file path)."
   @spec private_key_pem!(t()) :: String.t()
   def private_key_pem!(%__MODULE__{private_key: pem}) when is_binary(pem) and pem != "", do: pem
 

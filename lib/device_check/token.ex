@@ -11,6 +11,7 @@ defmodule DeviceCheck.Token do
 
   @type jwt :: String.t()
 
+  @doc "Generate a fresh ES256 JWT for DeviceCheck API authorization."
   @spec generate_jwt(keyword()) :: {:ok, jwt()} | {:error, term()}
   def generate_jwt(opts \\ []) do
     config = Config.load(opts)
@@ -45,11 +46,13 @@ defmodule DeviceCheck.Token do
     end
   end
 
+  @doc "Returns a JWT token (same as generate_jwt for direct use)."
   @spec access_token(keyword()) :: {:ok, String.t()} | {:error, term()}
   def access_token(opts \\ []) do
     generate_jwt(opts)
   end
 
+  @doc "Generate a JWT and return it with the expiration timestamp."
   @spec access_token_with_expiry(keyword()) :: {:ok, String.t(), integer()} | {:error, term()}
   def access_token_with_expiry(opts \\ []) do
     config = Config.load(opts)

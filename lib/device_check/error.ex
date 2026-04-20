@@ -9,6 +9,7 @@ defmodule DeviceCheck.Error do
           details: term()
         }
 
+  @doc "Create an error struct from an HTTP response status and body."
   @spec from_http(non_neg_integer(), term()) :: t()
   def from_http(status, body) do
     %__MODULE__{

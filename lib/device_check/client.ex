@@ -14,6 +14,7 @@ defmodule DeviceCheck.Client do
     :req_options
   ]
 
+  @doc "Make an authenticated POST request to the DeviceCheck API."
   @spec post(String.t(), map(), keyword()) :: {:ok, term()} | {:error, term()}
   def post(path, body, opts) do
     {config_opts, _meta, _params} = split_opts(opts)

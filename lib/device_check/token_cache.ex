@@ -13,15 +13,20 @@ defmodule DeviceCheck.TokenCache do
 
   @refresh_buffer_seconds 60
 
+  @doc "Start the token cache GenServer."
+  @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, Keyword.put_new(opts, :name, __MODULE__))
   end
 
+  @doc "Fetch a cached token, generating a new one if expired or not present."
   @spec fetch() :: {:ok, String.t()} | {:error, term()}
   def fetch(server \\ __MODULE__) do
     GenServer.call(server, :fetch)
   end
 
+  @doc "Clear the cached token, forcing a new token on next fetch."
+  @spec clear() :: :ok
   def clear(server \\ __MODULE__) do
     GenServer.call(server, :clear)
   end
