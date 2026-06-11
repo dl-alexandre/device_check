@@ -15,7 +15,7 @@ Add to your `mix.exs`:
 ```elixir
 defp deps do
   [
-    {:device_check, "~> 0.1.0"}
+    {:device_check, "~> 0.3.0"}
   ]
 end
 ```

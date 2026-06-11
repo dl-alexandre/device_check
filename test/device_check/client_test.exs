@@ -14,7 +14,8 @@ defmodule DeviceCheck.ClientTest do
         key_id: "KEYID56789",
         private_key: private_key,
         base_url: "http://localhost:#{bypass.port}",
-        development: true
+        development: true,
+        req_options: [retry: false]
       ]
     )
 
